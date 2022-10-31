@@ -1,0 +1,62 @@
+{
+  "pointMark": {
+    "thangTemplate": "pointMark"
+  },
+  "horizontalFall": {
+    "thangTemplate": "horizontalFall"
+  },
+  "verticalFall": {
+    "thangTemplate": "verticalFall"
+  },
+  "horizontalRiver": {
+    "thangTemplate": "horizontalRiver"
+  },
+  "verticalRiver": {
+    "thangTemplate": "verticalRiver"
+  },
+  "bridge": {
+    "thangTemplate": "bridge"
+  },
+  "E0": {
+    "thangTemplate": "e0"
+  },
+  "E1": {
+    "thangTemplate": "e1"
+  },
+  "E2": {
+    "thangTemplate": "e2"
+  },
+  "E3": {
+    "thangTemplate": "goblin"
+  },
+  "T0": {
+    "thangTemplate": "t0"
+  },
+  "T1": {
+    "thangTemplate": "t1"
+  },
+  "T2": {
+    "thangTemplate": "t2"
+  },
+  "G0": {
+    "thangTemplate": "g0"
+  },
+  "G1": {
+    "thangTemplate": "g1"
+  },
+  "G2": {
+    "thangTemplate": "g2"
+  },
+  "E9": {
+    "thangTemplate": "ogre"
+  },
+  "hriver": {
+    "thangTemplate": "hriver"
+  },
+  "vriver": {
+    "thangTemplate": "vriver"
+  },
+  "xriver": {
+    "thangTemplate": "xriver"
+  }
+}

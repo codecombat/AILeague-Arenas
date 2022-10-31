@@ -1,0 +1,78 @@
+{
+  "munchkin": {
+    "maxSpeed": 12,
+    "maxHealth": 50,
+    "attackDamage": 10,
+    "cost": 0.5
+  },
+  "ogre": {
+    "maxSpeed": 8,
+    "maxHealth": 250,
+    "attackDamage": 50,
+    "cost": 2
+  },
+  "thrower": {
+    "maxSpeed": 20,
+    "maxHealth": 125,
+    "attackDamage": 50,
+    "attackRange": 24,
+    "cost": 2
+  },
+  "orb": {
+    "maxSpeed": 14,
+    "maxHealth": 200,
+    "attackDamage": 50,
+    "attackRange": 5,
+    "cost": 2,
+    "flying": true
+  },
+  "troll": {
+    "maxSpeed": 7,
+    "maxHealth": 700,
+    "attackDamage": 100,
+    "cost": 4
+  },
+  "shaman": {
+    "maxSpeed": 18,
+    "maxHealth": 350,
+    "attackDamage": 100,
+    "attackRange": 24,
+    "cost": 4
+  },
+  "bird": {
+    "maxSpeed": 14,
+    "maxHealth": 1000,
+    "attackDamage": 100,
+    "attackRange": 5,
+    "cost": 4,
+    "flying": true
+  },
+  "brawler": {
+    "maxSpeed": 6,
+    "maxHealth": 4000,
+    "attackDamage": 250,
+    "cost": 6
+  },
+  "warlock": {
+    "maxSpeed": 16,
+    "maxHealth": 1500,
+    "attackDamage": 250,
+    "attackRange": 24,
+    "cost": 6
+  },
+  "rider": {
+    "maxSpeed": 14,
+    "maxHealth": 2500,
+    "attackDamage": 250,
+    "attackRange": 24,
+    "cost": 6,
+    "flying": true
+  },
+  "elemental": {
+    "maxSpeed": 14,
+    "maxHealth": 8000,
+    "attackDamage": 350,
+    "attackRange": 7,
+    "cost": 12
+  }
+}

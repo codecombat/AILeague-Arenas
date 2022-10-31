@@ -1,0 +1,101 @@
+{
+  "hero": {
+    "health": [
+      100,
+      120,
+      150,
+      180,
+      225
+    ],
+    "speed": 0,
+    "attackCooldown": 1,
+    "attackDamage": [
+      10,
+      15,
+      20,
+      25,
+      30
+    ],
+    "gloryForLevel": [
+      100,
+      300,
+      600,
+      1500,
+      9999999
+    ]
+  },
+  "map": {
+    "cellSize": 20,
+    "cell0": {
+      "x": 6,
+      "y": 6
+    },
+    "rows": 5,
+    "columns": 6,
+    "maxX": 120,
+    "maxY": 100
+  },
+  "treasure": [
+    {
+      "value": 50,
+      "cooldown": 5
+    },
+    {
+      "value": 75,
+      "cooldown": 10
+    },
+    {
+      "value": 100,
+      "cooldown": 15
+    },
+    {
+      "value": 200,
+      "cooldown": 20
+    }
+  ],
+  "glory": [
+    {
+      "value": 50,
+      "cooldown": 5
+    },
+    {
+      "value": 75,
+      "cooldown": 10
+    },
+    {
+      "value": 100,
+      "cooldown": 15
+    },
+    {
+      "value": 200,
+      "cooldown": 20
+    }
+  ],
+  "monster": [
+    {
+      "value": 25,
+      "cooldown": 10,
+      "maxHealth": 20,
+      "attackDamage": 20,
+      "attackRange": 7
+    },
+    {
+      "value": 40,
+      "cooldown": 15,
+      "maxHealth": 45,
+      "attackDamage": 35,
+      "attackRange": 7
+    },
+    {
+      "value": 60,
+      "cooldown": 20,
+      "maxHealth": 100,
+      "attackDamage": 50,
+      "attackRange": 7
+    }
+  ],
+  "game": {
+    "goldToWin": 500,
+    "maxTime": 120
+  }
+}

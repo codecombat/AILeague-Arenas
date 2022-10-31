@@ -1,0 +1,193 @@
+{
+    "lava": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava"
+    },
+    "cooldown": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "blue-item"
+    },
+    "red-item": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "red-item"
+    },
+    "heal": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "green-item"
+    },
+    "fireball": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "fireball"
+    },
+    "speed": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "red-item"
+    },
+    "lava0001": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava0001"
+    },
+    "lava0010": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava0010"
+    },
+    "lava0011": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava0011"
+    },
+    "lava0100": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava0100"
+    },
+    "lava0101": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava0101"
+    },
+    "lava0110": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava0110"
+    },
+    "lava0111": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava0111"
+    },
+    "lava1000": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava1000"
+    },
+    "lava1001": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava1001"
+    },
+    "lava1010": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava1010"
+    },
+    "lava1011": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava1011"
+    },
+    "lava1100": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava1100"
+    },
+    "lava1101": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava1101"
+    },
+    "lava1110": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava1110"
+    },
+    "lava1111": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava1111"
+    },
+    "lava0000": {
+      "thangType": "",
+      "buildCooldown": 0,
+      "thangTemplate": "lava0000"
+    },
+
+    "blava0001": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava0001"
+      },
+      "blava0010": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava0010"
+      },
+      "blava0011": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava0011"
+      },
+      "blava0100": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava0100"
+      },
+      "blava0101": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava0101"
+      },
+      "blava0110": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava0110"
+      },
+      "blava0111": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava0111"
+      },
+      "blava1000": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava1000"
+      },
+      "blava1001": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava1001"
+      },
+      "blava1010": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava1010"
+      },
+      "blava1011": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava1011"
+      },
+      "blava1100": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava1100"
+      },
+      "blava1101": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava1101"
+      },
+      "blava1110": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava1110"
+      },
+      "blava1111": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava1111"
+      },
+      "blava0000": {
+        "thangType": "",
+        "buildCooldown": 0,
+        "thangTemplate": "blava0000"
+      }
+  }
