@@ -31,6 +31,7 @@ const DIRECTION_ROTATION = {
 const JUMP = 'jump';
 const DASH = 'dash';
 const FIRE = 'fire';
+const THROW = 'throw';
 
 (class MagmaBugPlayer extends Component {
     constructor(config) {
@@ -55,11 +56,13 @@ const FIRE = 'fire';
         thang.jump = this._jump.bind(thang);
         thang.dash = this._dash.bind(thang);
         thang.fire = this._fire.bind(thang);
+        thang.throw = this._throw.bind(thang);
 
         thang.abilityCooldowns = {
             [JUMP]: 0,
             [DASH]: 0,
-            [FIRE]: 0
+            [FIRE]: 0,
+            [THROW]: 0
         };
         thang.isReady = this._isReady.bind(thang);
         thang.lastDirection = thang.color == RED ? RIGHT : LEFT;
@@ -214,17 +217,44 @@ const FIRE = 'fire';
         fireball.power = this.score * this.ref.scoreLavaCoef + this.ref.lavaLifespan;
     }
 
+    _throw(x, y) {
+        if (!this.isReady('throw')) {
+            return false;
+        }
+        this.abilityCooldowns.throw = this.world.age + this.ref.special.throw.specificCooldown;
+        let throwPos = new Vector(x, y);
+        if (this.color == BLUE) {
+            throwPos = new Vector(this.maxCoordinateX - x, this.maxCoordinateY - y);
+        }
+        this.targetPos = throwPos.copy();
+        const blob = this.ref.instabuild(`${this.color}-blob`, throwPos.x, throwPos.y);
+        const rock = this.ref.instabuild(this.rockAsset || 'rock', throwPos.x, throwPos.y);
+        blob.color = this.color;
+        blob.targetPos = throwPos;
+        const dist = this.distance(throwPos);
+        blob.flightTime = dist / this.ref.special.throw.speed;
+        blob.lifespan = blob.flightTime + this.world.dt * 2;
+        // blob.maxSpeed = this.ref.blobSpeed || 10;
+        blob.launch(this);
+        this.targetPos = null;
+        blob.explode = () => {
+            this.ref.explodeBlob(blob, this);
+        };
+        blob.power = this.score * this.ref.scoreLavaCoef + this.ref.lavaLifespan;
+    }
+
     _getLavaMap() {
         const origMap = this.ref.lavaMap;
         const lavaMap = [];
         // const repeat = this.ref.step;
         const repeat = 1;
+        const sign = this.mirrorLavaValues ? -1 : 1;
         for (let row of origMap) {
             for (let i = 0; i < repeat; i++) {
                 let newRow = [];
                 for (let cell of row) {
                     for (let j = 0; j < repeat; j++) {
-                        newRow.push(cell);
+                        newRow.push(cell * sign);
                     }
                 }
                 lavaMap.push(newRow);
@@ -234,6 +264,7 @@ const FIRE = 'fire';
             lavaMap.reverse();
             lavaMap.forEach(row => row.reverse());
         }
+        
         return lavaMap;
     }
 
@@ -249,7 +280,8 @@ const FIRE = 'fire';
         if (row < 0 || row >= lavaMap.length || col < 0 || col >= lavaMap[row].length) {
             return 9999;
         }
-        return lavaMap[row][col];
+        const sign = this.mirrorLavaValues ? -1 : 1;
+        return lavaMap[row][col] * sign;
     }
     
     hookOnEndMultiFrameMove() {

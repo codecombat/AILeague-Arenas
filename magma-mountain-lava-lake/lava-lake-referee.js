@@ -34,7 +34,6 @@ const ITEM_TYPES = [GREEN_ITEM, BLUE_ITEM, RED_ITEM];
             h.maxHealth = this.heroHealth;
             h.keepTrackedProperty('health');
             h.keepTrackedProperty('maxHealth');
-            debugger
             h.rangeThang = this.getByID(`range-${h.color}`);
             h.rangeThang.setScale(0.17 * this.heroCollectRange);
             h.canCollect = (item) => {
@@ -158,51 +157,62 @@ const ITEM_TYPES = [GREEN_ITEM, BLUE_ITEM, RED_ITEM];
             h.jumpCell = {row: h.prevCell.row, col: h.prevCell.col};
         }
         if (h.prevCell.row != row || h.prevCell.col != col) {            
-            if (!h.jumpCell || (h.jumpCell.row == h.prevCell.row && h.jumpCell.col == h.prevCell.col)) {
-                let lavaLifespan = h.score * this.scoreLavaCoef + this.lavaLifespan;
-                let [fromRow, toRow] = [h.prevCell.row, h.currentCell.row];
-                let [fromCol, toCol] = [h.prevCell.col, h.currentCell.col];
-                if (h.lastDirection == 'up') {
-                    if (h.wasWrapped) {
-                        toRow += this.maxRows;
-                    }
-                    for (let r = fromRow; r < toRow; r++) {
-                        this.createLavaCell(r % this.maxRows, h.currentCell.col, lavaLifespan, h.color);
-                    }
+            // if (!h.jumpCell || (h.jumpCell.row == h.prevCell.row && h.jumpCell.col == h.prevCell.col)) {
+            let lavaLifespan = h.score * this.scoreLavaCoef + this.lavaLifespan;
+            let [fromRow, toRow] = [h.prevCell.row, h.currentCell.row];
+            let [fromCol, toCol] = [h.prevCell.col, h.currentCell.col];
+            if (h.lastDirection == 'up') {
+                if (h.wasWrapped) {
+                    toRow += this.maxRows;
                 }
-                else if (h.lastDirection == 'down') {
-                    if (h.wasWrapped) {
-                        toRow -= this.maxRows;
-                    }
-                    else {
-                        for (let r = fromRow; r > toRow; r--) {
-                            this.createLavaCell((r + this.maxRows) % this.maxRows, h.currentCell.col, lavaLifespan, h.color);
-                        }
-                    }
+                for (let r = fromRow; r < toRow; r++) {
+                    this.createLavaCell(r % this.maxRows, h.currentCell.col, lavaLifespan, h.color);
                 }
-                else if (h.lastDirection == 'right') {
-                    if (h.wasWrapped) {
-                        toCol += this.maxCols;
-                    }
-                    else {
-                        for (let c = fromCol; c < toCol; c++) {
-                            this.createLavaCell(h.currentCell.row, c % this.maxCols, lavaLifespan, h.color);
-                        }
-                    }
+            }
+            else if (h.lastDirection == 'down') {
+                if (h.wasWrapped) {
+                    toRow -= this.maxRows;
                 }
-                else if (h.lastDirection == 'left') {
-                    if (h.wasWrapped) {
-                        toCol -= this.maxCols;
-                    }
-                    else {
-                        for (let c = fromCol; c > toCol; c--) {
-                            this.createLavaCell(h.currentCell.row, (c + this.maxCols) % this.maxCols, lavaLifespan, h.color);
-                        }
+                else {
+                    for (let r = fromRow; r > toRow; r--) {
+                        this.createLavaCell((r + this.maxRows) % this.maxRows, h.currentCell.col, lavaLifespan, h.color);
                     }
                 }
             }
+            else if (h.lastDirection == 'right') {
+                if (h.wasWrapped) {
+                    toCol += this.maxCols;
+                }
+                else {
+                    for (let c = fromCol; c < toCol; c++) {
+                        this.createLavaCell(h.currentCell.row, c % this.maxCols, lavaLifespan, h.color);
+                    }
+                }
+            }
+            else if (h.lastDirection == 'left') {
+                if (h.wasWrapped) {
+                    toCol -= this.maxCols;
+                }
+                else {
+                    for (let c = fromCol; c > toCol; c--) {
+                        this.createLavaCell(h.currentCell.row, (c + this.maxCols) % this.maxCols, lavaLifespan, h.color);
+                    }
+                }
+            }
+            // }
             h.prevCell = {row, col};
             h.wasWrapped = false;
+        }
+    },
+
+    explodeBlob(blob, who) {
+        const row = Math.floor(blob.pos.y / this.step);
+        const col = Math.floor(blob.pos.x / this.step);
+        for (let r = row - this.blobExplosionRange; r <= row + this.blobExplosionRange; r++) {
+            for (let c = col - this.blobExplosionRange; c <= col + this.blobExplosionRange; c++) {
+                if (r <= 0 || r >= this.maxRows - 1 || c <= 0 || c >= this.maxCols - 1) return;
+                this.createLavaCell(r, c, blob.power, who.color);
+            }
         }
     },
 
