@@ -233,11 +233,12 @@ const THROW = 'throw';
         blob.targetPos = throwPos;
         const dist = this.distance(throwPos);
         blob.flightTime = dist / this.ref.special.throw.speed;
-        blob.lifespan = blob.flightTime + this.world.dt * 2;
+        blob.lifespan = blob.flightTime + this.world.dt * 12;
         // blob.maxSpeed = this.ref.blobSpeed || 10;
         blob.launch(this);
         this.targetPos = null;
         blob.explode = () => {
+            blob.setExists(false);
             this.ref.explodeBlob(blob, this);
         };
         blob.power = this.score * this.ref.scoreLavaCoef + this.ref.lavaLifespan;

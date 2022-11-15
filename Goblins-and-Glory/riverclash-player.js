@@ -27,7 +27,8 @@ const exploreTime = {
         thang.moveTo = this._moveTo.bind(thang);
         thang.explore = this._explore.bind(thang);
         thang.wait = this._wait.bind(thang);
-        thang.attack = this._attack.bind(thang);
+        thang.whatAtPoint = this._whatAtPoint.bind(thang);
+        // thang.attack = this._attack.bind(thang);
         
         // For the direct control of
         thang._unblock = thang.unblock;
@@ -36,7 +37,6 @@ const exploreTime = {
         thang.block = () => {};
         thang.unblockingTime = 0;
         thang.say = this._say.bind(thang);
-        thang.whatAtPoint = this._whatAtPoint.bind(thang);
         
         Object.defineProperty(thang, 'currentPoint', {
             get: () => {
@@ -50,6 +50,8 @@ const exploreTime = {
                 return thang.getNearest(points).pointNumber;
             }
         });
+        
+        
         Object.defineProperty(thang, 'targetPoint', {
             get: () => {
                 if (thang.color == BLUE) {
@@ -70,18 +72,24 @@ const exploreTime = {
     _say() {}
 
     _takeDamage (damage, attacker) {
+        // this.tell("sda")
         this.enemy = attacker;
         this.brake();
         this.setAction('idle');
+        this.setTargetPos(null);
+        this.setTarget(null);
         this.moveToTarget = null;
-        // this.attack(attacker);
+        this.intention = "fighting";
+        // this.endMultiFrameMove();
+        // this.velocity = new Vector(0, 0);
         this.setAction('attack');
         this.act();
         this.performAttack(attacker);
+        return this._block();
     }
 
     stopMoveTo() {
-        debugger
+        this.setTargetPos(null);
         this._targetPoint = null;
         return this.heroUnblock();
     }
@@ -97,7 +105,8 @@ const exploreTime = {
         }
         this.intention = 'moveTo';
         this._targetPoint = point;
-        return this.oMoveTo(point);
+        this.oMoveTo(point);
+        return this._block();
     }
     
     _explore() {
@@ -121,9 +130,12 @@ const exploreTime = {
     }
 
     _whatAtPoint(point) {
+        if (this.color == BLUE) {
+            point += 1000;
+        }
         const thang = this.ref.getThangByPoint(point);
-        if (thang && thang.active) {
-            return thang;
+        if (thang) {
+            return thang.type;
         }
         return null;
     }
@@ -190,15 +202,20 @@ const exploreTime = {
         if (this.unblockingTime && this.unblockingTime > this.world.age) {
             return;
         }
-        if (this.intention == 'moveTo' && this.enemy) {
-            if (this.actionHeats && this.actionHeats.all >= 0) {
+        if (this.intention == 'fighting' && this.enemy) {
+            if (this.actionHeats && this.actionHeats.all > 0) {
                 return;
             }
             if (this.enemy.dead) {
-                // debugger
-                
                 this.enemy = null;
-                return this.heroUnblock(); //this.oMoveTo(this._targetPoint);
+                this.intention = 'moveTo';
+                if (this._targetPoint != null) {
+                    this.oMoveTo(this._targetPoint);
+                    return this._block();
+                }
+                else {
+                    return this._unblock();
+                }
             }
         }
         if (this.intention == 'tell') {

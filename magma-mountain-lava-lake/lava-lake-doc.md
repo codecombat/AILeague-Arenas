@@ -47,17 +47,24 @@ if hero.isReady('dash'):
 Walls surround the game arena, and if your avatar gets to any wall, then instant death.
 The island can be represented as a grid where each cell is `2` meters. So when your avatar moves `1` time (ex: `moveRight(1)`), it moves for 4 meters or 2 cells.
 
-Avatars are leaving magma trails behind them, where each "lava cell" exists for `6 + score * 0.75` seconds (on the moment when it was created).
+Avatars are leaving magma trails behind them, where each "lava cell" exists for `6 + score * 1` seconds (on the moment when it was created).
 
-If you or your opponent get into lava, then you get `10` damage per second while you are in lava.
+Snail can move through lava, but if it touches lava, it gets damaged. The damage depends on the lava color.
 
-# Map API
+If you or your opponent get into your lava, then you get `5` damage per second while you are in lava.
+For the opposite color, you get `0` damage per second.
+
+## Map API
 
 You can check if there is a lava cell at any point with the method `lavaAtXY(x, y)`, 
 it returns a number that means how long lava stays on that point, or `0` if it's clear ground.
+If it's you color, then it returns a positive number, if it's your opponent's color, then it returns a negative number.
 
 To get the entire map of lava, you can use `getLavaMap()` method that returns a 2d array (34 rows to 40 columns), where each cell is a lava/ground patch with the size of 2x2 meters.
-Each cell contains a number: `0` if it's clear or a positive number - lava lifespan.
+Each cell contains a number: `0` if it's clear or a number (positive or negative) - lava lifespan.
+
+For negative numbers, you need to get an absolute value to get the lifespan.
+
 
 # Special abilities
 
@@ -72,6 +79,8 @@ Each ability has its own cooldown when the ability can be used again. Cooldowns 
     - `distance`: 12m
     - `speed ratio`: 3
 - `fire` - shoots a fireball that leaves a wide trail of lava.
+    - `cooldown`: 12s
+- `throw` - throws a lava bulb at a point `{x, y}` that explodes leaves a wide trail of lava.
     - `cooldown`: 12s
 
 # Items
