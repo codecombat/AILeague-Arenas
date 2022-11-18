@@ -7,12 +7,12 @@ const INIT_MAP = [
 ];
 
 const TREASURE = 'treasure';
-const GLORY = 'glory';
+const STATUE = 'STATUE';
 const MONSTER = 'monster';
 
 const LEGEND = {
     'T': TREASURE,
-    'G': GLORY,
+    'G': STATUE,
     'E': MONSTER,
 };
 
@@ -73,7 +73,7 @@ const LEGEND = {
             }
         }
         // build horizontal rivers
-        for (let y=0; y <= params.maxY; y += params.cellSize) {
+        for (let y=params.cellSize; y < params.maxY; y += params.cellSize) {
             // this.instabuild('horizontalRiver', params.maxX / 2, y);
             this.instabuild('horizontalFall', params.maxX / 2, y).initialize();
             for (let x = 0; x <= params.maxX; x += 4) {
@@ -104,6 +104,7 @@ const LEGEND = {
     },
 
     setupMap() {
+        debugger
         this.liveMap = [];
         let initMap = INIT_MAP;
         initMap = initMap.reverse();
@@ -132,8 +133,14 @@ const LEGEND = {
         thang.active = true;
         thang.type = LEGEND[kind[0]];
         thang.tier = Number(kind[1]);
-        const params = this.gameParameters[thang.type][thang.tier];
-        thang.value = params.value;
+        let params = this.itemParameters[thang.type]
+        if (!params) {
+            debugger;
+        }
+        
+        params = params[thang.tier];
+        thang.glory = params.glory;
+        thang.gold = params.gold;
         thang.addTrackedProperties(['value', 'number']);
         thang.keepTrackedProperty('value');
         thang.cooldown = params.cooldown;
@@ -154,11 +161,12 @@ const LEGEND = {
 
     setupMonster(monster) {
         // debugger
-        const params = this.gameParameters.monster[monster.tier];
+        const params = this.itemParameters.monster[monster.tier];
         monster.maxHealth = params.maxHealth;
         monster.health = params.maxHealth;
         monster.keepTrackedProperty('health');
         monster.keepTrackedProperty('maxHealth');
+        
         monster.attackDamage = params.attackDamage;
         monster.attackRange = params.attackRange;
         monster.chooseAction = () => {
@@ -286,14 +294,6 @@ const LEGEND = {
         return this.liveMap[point]
     },
 
-    attacked(who, thang) {
-        // TODO: Check if boss
-        thang.active = false;
-        thang.consumed = world.age;
-        this.inventorySystem.addGoldForTeam(who.team, this.gameParameters.treasure[thang.tier]);
-        this.hero.teamPower += gloryPoints[MONSTER]
-    },
-
     shouldRespawn(thang) {
         return thang.shouldRespawnAt &&  thang.shouldRespawnAt <= this.world.age;
     },
@@ -304,21 +304,16 @@ const LEGEND = {
         }
         thang.active = false;
         thang.consumed = true;
+        this.inventorySystem.addGoldForTeam(who.team, thang.gold);
+        who.teamPower += thang.value;
+        who.keepTrackedProperty('teamPower');
+        thang.shouldRespawnAt = world.age + thang.cooldown;
         if (thang.type == TREASURE) {
             thang.setAlpha(0.3);
-            this.inventorySystem.addGoldForTeam(who.team, thang.value);
+            
             thang.shouldRespawnAt = world.age + thang.cooldown;
-        } else if (thang.type == MONSTER) {
-            // thang.setAlpha(0.3);
-            this.inventorySystem.addGoldForTeam(who.team, thang.value);
-            who.teamPower += thang.value;
-            who.keepTrackedProperty('teamPower');
-            thang.shouldRespawnAt = world.age + thang.cooldown;
-        } else if (thang.type == GLORY) {
+        } else if (thang.type == STATUE) {
             thang.setAlpha(0.3);
-            thang.shouldRespawnAt = world.age + thang.cooldown;
-            who.teamPower += thang.value;
-            who.keepTrackedProperty('teamPower');
         }
     }
 });

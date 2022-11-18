@@ -1,0 +1,72 @@
+{
+    "monster": [
+      {
+        "glory": 25,
+        "gold": 25,
+        "cooldown": 10,
+        "maxHealth": 20,
+        "attackDamage": 20,
+        "attackRange": 7
+      },
+      {
+        "glory": 40,
+        "gold": 40,
+        "cooldown": 15,
+        "maxHealth": 45,
+        "attackDamage": 35,
+        "attackRange": 7
+      },
+      {
+        "glory": 60,
+        "gold": 60,
+        "cooldown": 20,
+        "maxHealth": 100,
+        "attackDamage": 50,
+        "attackRange": 7
+      }
+    ],
+    "treasure": [
+      {
+        "gold": 50,
+        "glory": 0,
+        "cooldown": 5
+      },
+      {
+        "gold": 75,
+        "glory": 0,
+        "cooldown": 10
+      },
+      {
+        "gold": 100,
+        "glory": 0,
+        "cooldown": 15
+      },
+      {
+        "gold": 200,
+        "glory": 0,
+        "cooldown": 20
+      }
+    ],
+    "statue": [
+      {
+        "glory": 50,
+        "gold": 0,
+        "cooldown": 5
+      },
+      {
+        "glory": 75,
+        "gold": 0,
+        "cooldown": 10
+      },
+      {
+        "glory": 100,
+        "gold": 0,
+        "cooldown": 15
+      },
+      {
+        "glory": 200,
+        "gold": 0,
+        "cooldown": 20
+      }
+    ]
+  }

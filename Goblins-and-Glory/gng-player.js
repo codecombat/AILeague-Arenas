@@ -4,12 +4,12 @@ const RED = 'red';
 const BLUE = 'blue';
 
 const TREASURE = 'treasure';
-const GLORY = 'glory';
+const STATUE = 'statue';
 const MONSTER = 'monster';
 
 const exploreTime = {
     [TREASURE]: 1,
-    [GLORY]: 1,
+    [STATUE]: 1,
     [MONSTER]: 1,
 };
 
@@ -36,7 +36,6 @@ const exploreTime = {
         thang._block = thang.block;
         thang.block = () => {};
         thang.unblockingTime = 0;
-        thang.say = this._say.bind(thang);
         
         Object.defineProperty(thang, 'currentPoint', {
             get: () => {
@@ -62,6 +61,7 @@ const exploreTime = {
         });
 
         thang.appendMethod('takeDamage', this._takeDamage.bind(thang));
+        thang.addAction('power-up', 0);
     }
     
     // performAttack(who) {
@@ -69,7 +69,9 @@ const exploreTime = {
     //     return this._unblock();
     // }
     
-    _say() {}
+    clearSpeech() {
+        return this._unblock();
+    }
 
     _takeDamage (damage, attacker) {
         // this.tell("sda")
@@ -104,10 +106,12 @@ const exploreTime = {
             point += 1000;
         }
         this.intention = 'moveTo';
-        this._targetPoint = point;
-        this.oMoveTo(point);
+        
+        const mresult = this.oMoveTo(point);
+        this._targetPoint = this.moveToTarget;
         return this._block();
     }
+    
     
     _explore() {
         const thang = this.ref.getThangByPoint(this.currentPoint);
@@ -116,7 +120,7 @@ const exploreTime = {
                 return this.exploreTreasure(thang);
             } else if (thang.type == MONSTER) {
                 // return this.exploreMonster(thang);
-            } else if (thang.type == GLORY) {
+            } else if (thang.type == STATUE) {
                 return this.exploreGlory(thang);
             }
         } 
@@ -134,18 +138,15 @@ const exploreTime = {
             point += 1000;
         }
         const thang = this.ref.getThangByPoint(point);
-        if (thang) {
-            return thang.type;
-        }
-        return null;
+        return thang || null;
     }
 
     exploreTreasure(thang) {
-        if(thang.active) {
-            this.say("A chest! Wowee!");
-        } else {
-            //this.say("This chest has been looted");
-        }
+        // if(thang.active) {
+        //     this.say("A chest! Wowee!");
+        // } else {
+        //     //this.say("This chest has been looted");
+        // }
         this.setRotation(thang.pos.copy().subtract(this.pos).heading());
         this.setAction('attack');
         this.intention = 'explore';
@@ -164,17 +165,17 @@ const exploreTime = {
     }
 
     exploreGlory(thang) {
-        if(thang.active) {
-            this.say("I see a shrine!");
-        } else {
-            //this.say("This shrine is out of glory")
-        }
+        // if(thang.active) {
+        //     this.say("I see a shrine!");
+        // } else {
+        //     //this.say("This shrine is out of glory")
+        // }
         this.setRotation(thang.pos.copy().subtract(this.pos).heading());
-        this.setAction('attack');
+        this.setAction('power-up');
         this.intention = 'explore';
         thang.blocked = true;
         this.exploring = thang;
-        this.unblockingTime = this.world.age + exploreTime[GLORY];
+        this.unblockingTime = this.world.age + exploreTime[STATUE];
         return this._block();
     }
     
@@ -210,8 +211,15 @@ const exploreTime = {
                 this.enemy = null;
                 this.intention = 'moveTo';
                 if (this._targetPoint != null) {
-                    this.oMoveTo(this._targetPoint);
-                    return this._block();
+                    let target = this._targetPoint;
+                    const thresholdSq = target.moveToDistanceSquared || this.moveToDistanceSquared;
+                    if (this.distanceSquared(target) <= thresholdSq) {
+                        return this._unblock();
+                    }
+                    else {
+                        this.oMoveTo(target.id);
+                        return this._block();
+                    }
                 }
                 else {
                     return this._unblock();
