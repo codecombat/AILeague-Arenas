@@ -7,7 +7,7 @@ const INIT_MAP = [
 ];
 
 const TREASURE = 'treasure';
-const STATUE = 'STATUE';
+const STATUE = 'statue';
 const MONSTER = 'monster';
 
 const LEGEND = {
@@ -16,9 +16,13 @@ const LEGEND = {
     'E': MONSTER,
 };
 
+const RED = 'red';
+const BLUE = 'blue';
+
 
 ({
     setUpLevel () {
+        this.counter = 0;
         this.buildMap();
         this.setupMap();
         this.setupHeroes();
@@ -104,7 +108,6 @@ const LEGEND = {
     },
 
     setupMap() {
-        debugger
         this.liveMap = [];
         let initMap = INIT_MAP;
         initMap = initMap.reverse();
@@ -128,19 +131,19 @@ const LEGEND = {
 
     buildCell (kind, r, c) {
         let [x, y] = [(c + 0.5) * this.gameParameters.map.cellSize, (r + 0.5) * this.gameParameters.map.cellSize];
-        let thang = this.instabuild(kind, x, y);
+        let thang = this.instabuild(kind, x, y , kind + this.counter);
+        this.counter++;
         thang.kind = kind;
         thang.active = true;
         thang.type = LEGEND[kind[0]];
         thang.tier = Number(kind[1]);
         let params = this.itemParameters[thang.type]
-        if (!params) {
-            debugger;
-        }
-        
         params = params[thang.tier];
         thang.glory = params.glory;
         thang.gold = params.gold;
+        thang.value = params.gold;
+        thang.addTrackedProperties(['glory', 'number']);
+        thang.keepTrackedProperty('glory');
         thang.addTrackedProperties(['value', 'number']);
         thang.keepTrackedProperty('value');
         thang.cooldown = params.cooldown;
@@ -171,7 +174,7 @@ const LEGEND = {
         monster.attackRange = params.attackRange;
         monster.chooseAction = () => {
             let enemy = monster.findNearestEnemy();
-            if (enemy && monster.distanceTo(enemy) <= monster.attackRange) {
+            if (enemy && enemy.intention != 'home' && monster.distanceTo(enemy) <= monster.attackRange) {
                 monster.attack(enemy);
             }
         }
@@ -185,6 +188,10 @@ const LEGEND = {
         this.heroRed._currentPoint = 0;
         this.heroBlue._currentPoint = 1000;
         this.heroes = [this.heroRed, this.heroBlue];
+        this.heroesByColor = {
+            [RED]: this.heroRed,
+            [BLUE]: this.heroBlue
+        };
         for (let h of this.heroes) {
             h.ref = this;
             h.maxHealth = this.gameParameters.hero.health[0];
@@ -197,6 +204,7 @@ const LEGEND = {
             h.keepTrackedProperty('teamPower');
             h.teamPower = 0
             h.level = 0;
+            h.homePos = h.pos.copy();
         }
     },
 
@@ -280,6 +288,10 @@ const LEGEND = {
         }
     },
 
+    teleportHome(hero) {
+        hero.setPosition(hero.homePos);
+    },
+
     mirrorPointNumber(point) {
         if (point > 1000) {
             point = this.totalCells - 1 - (point - 1000);
@@ -291,7 +303,11 @@ const LEGEND = {
         if (point >= 1000) {
             point = this.totalCells - 1 - (point - 1000);
         }
-        return this.liveMap[point]
+        let item = this.liveMap[point]
+        if (item && item.shouldRespawnAt) {
+            return null;
+        }
+        return item;
     },
 
     shouldRespawn(thang) {
@@ -305,7 +321,7 @@ const LEGEND = {
         thang.active = false;
         thang.consumed = true;
         this.inventorySystem.addGoldForTeam(who.team, thang.gold);
-        who.teamPower += thang.value;
+        who.teamPower += thang.glory;
         who.keepTrackedProperty('teamPower');
         thang.shouldRespawnAt = world.age + thang.cooldown;
         if (thang.type == TREASURE) {

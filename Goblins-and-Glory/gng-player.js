@@ -60,6 +60,12 @@ const exploreTime = {
             }
         });
 
+        Object.defineProperty(thang, 'opponent', {
+            get: () => {
+                return thang.ref.getThangByColor(thang.color == RED ? BLUE : RED);
+            }
+        });
+
         thang.appendMethod('takeDamage', this._takeDamage.bind(thang));
         thang.addAction('power-up', 0);
     }
