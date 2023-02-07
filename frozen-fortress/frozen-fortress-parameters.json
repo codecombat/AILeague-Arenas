@@ -1,0 +1,91 @@
+{
+    "towers": {
+      "archer": {
+        "scales": true,
+        "attackCooldown": 0.5,
+        "attackDamage": 10,
+        "attackRange": 30,
+        "cost": 10
+      },
+      "cannon": {
+        "scales": true,
+        "attackCooldown": 2,
+        "attackDamage": 5,
+        "attackRange": 20,
+        "cost": 10
+      },
+      "ice": {
+        "scales": true,
+        "attackCooldown": 2.5,
+        "attackDamage": 1,
+        "attackRange": 17,
+        "cost": 10,
+        "specialFactor": 0.15,
+        "specialDuration": 1
+      },
+      "farm": {
+        "cost": 10
+      },
+      "barracks": {
+        "cost": 10
+      }
+    },
+    "hero": {
+      "maxHealth": 200
+    },
+    "monsters": {
+      "thrower": {
+        "health": 10,
+        "gendered": false,
+        "value": 10
+      },
+      "goblin": {
+        "health": 20,
+        "gendered": true,
+        "value": 20
+      },
+      "munchkin": {
+        "health": 40,
+        "gendered": true,
+        "value": 40
+      },
+      "scout": {
+        "health": 80,
+        "gendered": true,
+        "value": 80
+      },
+      "ogre": {
+        "health": 160,
+        "gendered": true,
+        "value": 160
+      },
+      "headhunter": {
+        "health": 320,
+        "gendered": false,
+        "value": 320
+      },
+      "witch": {
+        "health": 640,
+        "gendered": true,
+        "value": 640
+      },
+      "chieftain": {
+        "health": 1280,
+        "gendered": false,
+        "value": 1280
+      },
+      "fangrider": {
+        "health": 2560,
+        "gendered": false,
+        "value": 2560
+      },
+      "brawler": {
+        "health": 5120,
+        "gendered": false,
+        "value": 5120
+      }
+    },
+    "game": {
+      "maxTime": 90
+    }
+  }
