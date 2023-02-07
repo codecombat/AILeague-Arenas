@@ -131,7 +131,7 @@ const BLUE = 'blue';
 
     buildCell (kind, r, c) {
         let [x, y] = [(c + 0.5) * this.gameParameters.map.cellSize, (r + 0.5) * this.gameParameters.map.cellSize];
-        let thang = this.instabuild(kind, x, y , kind + this.counter);
+        let thang = this.instabuild(kind, x, y , null, kind + this.counter);
         this.counter++;
         thang.kind = kind;
         thang.active = true;
@@ -140,7 +140,7 @@ const BLUE = 'blue';
         let params = this.itemParameters[thang.type]
         params = params[thang.tier];
         thang.glory = params.glory;
-        thang.gold = params.gold;
+        thang.esper_gold = params.gold;
         thang.value = params.gold;
         thang.addTrackedProperties(['glory', 'number']);
         thang.keepTrackedProperty('glory');
@@ -320,7 +320,7 @@ const BLUE = 'blue';
         }
         thang.active = false;
         thang.consumed = true;
-        this.inventorySystem.addGoldForTeam(who.team, thang.gold);
+        this.inventorySystem.addGoldForTeam(who.team, thang.esper_gold);
         who.teamPower += thang.glory;
         who.keepTrackedProperty('teamPower');
         thang.shouldRespawnAt = world.age + thang.cooldown;

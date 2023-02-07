@@ -28,6 +28,7 @@ const exploreTime = {
         thang.explore = this._explore.bind(thang);
         thang.wait = this._wait.bind(thang);
         thang.whatAtPoint = this._whatAtPoint.bind(thang);
+        thang.home = this._home.bind(thang);
         // thang.attack = this._attack.bind(thang);
         
         // For the direct control of
@@ -54,20 +55,50 @@ const exploreTime = {
         Object.defineProperty(thang, 'targetPoint', {
             get: () => {
                 if (thang.color == BLUE) {
-                    return thang.ref.mirrorPointNumber(thang._targetPoint);
+                    return thang.ref.mirrorPointNumber(thang._targetPoint) || null;
                 }
-                return thang._targetPoint;
+                return thang._targetPoint || null;
             }
         });
 
         Object.defineProperty(thang, 'opponent', {
             get: () => {
-                return thang.ref.getThangByColor(thang.color == RED ? BLUE : RED);
+                return thang.ref.heroesByColor[thang.color == RED ? BLUE : RED];
+            }
+        });
+
+        Object.defineProperty(thang, 'speed', {
+            get: () => {
+                return thang.maxSpeed;
+            }
+        });
+        Object.defineProperty(thang, 'time', {
+            get: () => {
+                return thang.world.age;
+            }
+        });
+
+        Object.defineProperty(thang, 'attackCooldown', {
+            get: () => {
+                return thang.actions.attack.cooldown;
+            }
+        });
+
+        Object.defineProperty(thang, 'dps', {
+            get: () => {
+                return thang.attackDamage / thang.attackCooldown;
+            }
+        });
+
+        Object.defineProperty(thang, 'glory', {
+            get: () => {
+                return thang.teamPower;
             }
         });
 
         thang.appendMethod('takeDamage', this._takeDamage.bind(thang));
         thang.addAction('power-up', 0);
+        thang.addAction('power-up-armor', 0);
     }
     
     // performAttack(who) {
@@ -145,6 +176,14 @@ const exploreTime = {
         }
         const thang = this.ref.getThangByPoint(point);
         return thang || null;
+    }
+
+    _home() {
+        this.intention = 'home';
+        this.unblockingTime = this.time + this.ref.gameParameters.hero.teleportTime;
+        this.setAction('power-up-armor');
+        this.setAlpha(0.5);
+        return this._block();
     }
 
     exploreTreasure(thang) {
@@ -244,6 +283,13 @@ const exploreTime = {
         }
         if (this.intention == 'wait') {
             this.intention = null;
+            return this.heroUnblock();
+        }
+        if (this.intention == 'home') {
+            this.intention = null;
+            this.ref.teleportHome(this);
+            this.setAction('idle');
+            this.setAlpha(1);
             return this.heroUnblock();
         }
         
